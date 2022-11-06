@@ -13,12 +13,12 @@
 
     <?php
     require '../database/bootsDB.php';
-    $news_id = $_GET['id'];
+    $news_id = $_GET['news_id'];
     $news = $connect_DB->select('news', "*", "id = $news_id");
     $rating_comment = $connect_DB->select('rating_comment', "*", "customer_id = $news_id");
-    
-    $join_condition = "on customers.id = rating_comment.customer_id where news_id = $news_id";
-    $cus_join_ratcmt = $connect_DB->join("customers", "rating_comment","*",$join_condition);
+
+    $cus_join_ratcmt = $connect_DB->join("customers", "rating_comment", "*", "customers.id = rating_comment.customer_id", "news_id = $news_id");
+    $ad_join_ratcmt = $connect_DB->join("admin", "rating_comment", "*", "admin.id = rating_comment.admin_id", "news_id = $news_id");
     ?>
 
     <table style="border: 1px solid black">
@@ -45,24 +45,71 @@
                 <img src="<?php echo $news['image'] ?>" style="height:200px">
             </td>
             <td>
-                <a href="update_form.php?id=<?php echo $news['id'] ?>">
-                    Sửa
-                </a>
+                <button>
+                    <a href="../news/update_form.php?id=<?php echo $news['id'] ?>">
+                        Sửa
+                    </a>
+                </button>
+
             </td>
             <td>
-                <a href="delete.php?id=<?php echo $news['id'] ?>">
-                    Xóa
-                </a>
+                <button>
+                    <a href="../news/delete.php?id=<?php echo $news['id'] ?>">
+                        Xóa
+                    </a>
+                </button>
+
             </td>
         </tr>
     </table>
     <h2>Các bình luận</h2>
-    <dl>
-        <dt><?= $cus_join_ratcmt['customer_name'];?></dt>
-        <dd>time comment: <?=$cus_join_ratcmt['create_at'] ?></dd>
-        <dd>rating: <?=$cus_join_ratcmt['rating']  ?></dd>
-        <dd>comment: <?=$cus_join_ratcmt['comment']  ?></dd>
-    </dl>
+
+    <?php
+    require 'display_rating_comment.php';
+    if (!empty($cus_join_ratcmt) && !empty($ad_join_ratcmt)) {
+        foreach ($cus_join_ratcmt as $each) {
+            $cus = new rating_coment_diplay($each);
+    ?>
+            <dd>
+            <dt><?php $cus->show_name() ?></dt>
+            <dl><?php $cus->show_time() ?></dl>
+            <dl><?php $cus->show_rating() ?></dl>
+            <dl><?php $cus->show_comment() ?></dl>
+
+            </dd>
+            <button>
+                <a href="delete.php?news_id=<?= $news_id ?>&rating_comment_id=<?= $each['rating_comment_id'] ?>">
+                    Xóa
+                </a>
+            </button>
+            <br>
+            <br>
+            <br>
+        <?php
+        }
+
+        foreach ($ad_join_ratcmt as $each) {
+
+            $ad = new rating_coment_diplay($each);
+        ?>
+            <dd>
+            <dt><?php $ad->show_name() ?></dt>
+            <dl><?php $ad->show_time() ?></dl>
+            <dl><?php $ad->show_rating() ?></dl>
+            <dl><?php $ad->show_comment() ?></dl>
+            </dd>
+            <button>
+                <a href="delete.php?news_id=<?= $news_id ?>&rating_comment_id=<?= $each['rating_comment_id'] ?>">
+                    Xóa
+                </a>
+            </button>
+            <br>
+            <br>
+            <br>
+    <?php
+        }
+    }
+    ?>
 
     <a href="../news/index.php">Trở lại danh sách bài đăng</a>
 </body>

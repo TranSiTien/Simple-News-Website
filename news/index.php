@@ -13,11 +13,36 @@
 
     <?php
     require '../database/bootsDB.php';
+    require 'UX/paging.php';
+    require 'UX/search.php';
+
     $news = $connect_DB->select('news', "*");
 
+    $search_key = search::get_search_key();
+    $articles_per_page = paging::$articles_per_page;
+    $article_to_jump = paging::get_article_to_jump();
+    $sql = "select * from news 
+    where title like '%$search_key%' or content like '%$search_key%'
+    limit $articles_per_page offset $article_to_jump";
+    $news = $connect_DB->execute_sql($sql);
     ?>
 
+
     <table style="border: 1px solid black">
+        <caption>
+            <form action="">
+                <input type="text" name="search" value="<?php echo $search_key ?>">
+                <button>Tìm kiếm</button>
+            </form>
+        </caption>
+
+        <button>
+            <a href="insert_form.php">
+                Tạo bài đăng
+            </a>
+        </button>
+        <br>
+
         <th>Mã</th>
         <th>Tiêu đề</th>
         <th>Nội dung</th>
@@ -43,30 +68,43 @@
                     <img src="<?php echo $each['image'] ?>" style="height:200px">
                 </td>
                 <td>
-                    <a href="update_form.php?id=<?php echo $each['id'] ?>">
-                        Sửa
-                    </a>
+                    <button>
+                        <a href="update_form.php?id=<?php echo $each['id'] ?>">
+                            Sửa
+                        </a>
+                    </button>
+
                 </td>
                 <td>
-                    <a href="delete.php?id=<?php echo $each['id'] ?>">
-                        Xóa
-                    </a>
+
+                    <button>
+                        <a href="delete.php?id=<?php echo $each['id'] ?>">
+                            Xóa
+                        </a>
+                    </button>
+
                 </td>
                 <td>
-                    
-                    <a href="../rating_comment/index.php?id=<?= $each['id'] ?>">
-                        Vào phần bình luận
-                    </a>
+                    <button>
+                        <a href="../rating_comment?news_id=<?= $each['id'] ?>">
+                            Vào phần bình luận
+                        </a>
+                    </button>
+
                 </td>
             </tr>
         <?php } ?>
     </table>
 
-    <button>
-        <a href="insert_form.php">
-            Tạo bài đăng
-        </a>
-    </button>
+    <?php for ($i = 1; $i <= paging::get_number_of_page($connect_DB, $search_key); $i++) { ?>
+        <button>
+            <a href="?page=<?php echo $i ?><?= empty($search_key) ? "" : "&search=$search_key" ?>">
+                <?php echo $i ?>
+            </a>
+        </button>
+
+    <?php } ?>
+
 </body>
 
 </html>
