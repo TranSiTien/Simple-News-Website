@@ -13,14 +13,14 @@
 
     <?php
     require '../database/bootsDB.php';
-    require 'UX/paging.php';
-    require 'UX/search.php';
+    require 'pagination.php';
+    require 'search.php';
 
     $news = $connect_DB->select('news', "*");
 
     $search_key = search::get_search_key();
-    $articles_per_page = paging::$articles_per_page;
-    $article_to_jump = paging::get_article_to_jump();
+    $articles_per_page = pagination::$articles_per_page;
+    $article_to_jump = pagination::get_article_to_jump();
     $sql = "select * from news 
     where title like '%$search_key%' or content like '%$search_key%'
     limit $articles_per_page offset $article_to_jump";
@@ -96,7 +96,7 @@
         <?php } ?>
     </table>
 
-    <?php for ($i = 1; $i <= paging::get_number_of_page($connect_DB, $search_key); $i++) { ?>
+    <?php for ($i = 1; $i <= pagination::get_number_of_page($connect_DB, $search_key); $i++) { ?>
         <button>
             <a href="?page=<?php echo $i ?><?= empty($search_key) ? "" : "&search=$search_key" ?>">
                 <?php echo $i ?>

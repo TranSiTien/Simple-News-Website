@@ -1,5 +1,5 @@
 <?php
-class paging
+class pagination
 {
     public static $articles_per_page = 2;
 
@@ -12,7 +12,7 @@ class paging
         return $page;
     }
 
-    public static function get_number_of_articles($connect_DB,string $search_key)
+    public static function get_number_of_articles($connect_DB, string $search_key)
     {
         $query_number_articles = "select count(*) from news
         where title like '%$search_key%' or content like '%$search_key%'";
@@ -21,9 +21,9 @@ class paging
         return $number_of_articles;
     }
 
-    public static function get_number_of_page($connect_DB,string $search_key)
+    public static function get_number_of_page($connect_DB, string $search_key)
     {
-        $number_of_page = ceil(self::get_number_of_articles($connect_DB,$search_key)/ self::$articles_per_page);
+        $number_of_page = ceil(self::get_number_of_articles($connect_DB, $search_key) / self::$articles_per_page);
         return $number_of_page;
     }
 
@@ -33,4 +33,3 @@ class paging
         return $article_to_jump;
     }
 }
-
