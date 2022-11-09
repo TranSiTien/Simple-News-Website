@@ -12,7 +12,7 @@
     <h2>Danh seg bài đăng</h2>
 
     <?php
-    require '../database/bootsDB.php';
+    require '../db-handeler/bootsDB.php';
     require 'pagination.php';
     require 'search.php';
 

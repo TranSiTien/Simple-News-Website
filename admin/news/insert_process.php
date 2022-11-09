@@ -4,7 +4,7 @@ $content = $_POST['content'];
 $image = $_POST['image'];
 $title = $_POST['title'];
 
-require '../database/bootsDB.php';
+require '../db-handeler/bootsDB.php';
 $connect_DB->insert(
     'news',
     [
