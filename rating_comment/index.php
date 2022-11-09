@@ -13,6 +13,8 @@
 
     <?php
     require '../database/bootsDB.php';
+    require 'display_rating_comment.php';
+
     $news_id = $_GET['news_id'];
     $news = $connect_DB->select('news', "*", "id = $news_id");
     $rating_comment = $connect_DB->select('rating_comment', "*", "customer_id = $news_id");
@@ -65,10 +67,10 @@
     <h2>Các bình luận</h2>
 
     <?php
-    require 'display_rating_comment.php';
+
     if (!empty($cus_join_ratcmt) && !empty($ad_join_ratcmt)) {
         foreach ($cus_join_ratcmt as $each) {
-            $cus = new rating_coment_diplay($each);
+            $cus = new diplay($each);
     ?>
             <dd>
             <dt><?php $cus->show_name() ?></dt>
@@ -90,7 +92,7 @@
 
         foreach ($ad_join_ratcmt as $each) {
 
-            $ad = new rating_coment_diplay($each);
+            $ad = new diplay($each);
         ?>
             <dd>
             <dt><?php $ad->show_name() ?></dt>
