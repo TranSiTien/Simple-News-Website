@@ -10,13 +10,7 @@ class diplay
     }
     public function show_name()
     {
-
-
-        if (array_key_exists('level', $this->each)) {
-            echo "admin: " . $this->each['name'];
-        } else {
-            echo "Người dùng: " . $this->each['name'];
-        }
+        echo "Người dùng: " . $this->each['name'];
     }
     public function show_time()
     {

@@ -12,15 +12,14 @@
     <h2>Bài đăng</h2>
 
     <?php
-    require '../database/bootsDB.php';
-    require 'display_rating_comment.php';
+    require '../db-handeler/bootstrap.php';
+    require 'display.php';
 
     $news_id = $_GET['news_id'];
     $news = $connect_DB->select('news', "*", "id = $news_id");
     $rating_comment = $connect_DB->select('rating_comment', "*", "customer_id = $news_id");
 
     $cus_join_ratcmt = $connect_DB->join("customers", "rating_comment", "*", "customers.id = rating_comment.customer_id", "news_id = $news_id");
-    $ad_join_ratcmt = $connect_DB->join("admin", "rating_comment", "*", "admin.id = rating_comment.admin_id", "news_id = $news_id");
     ?>
 
     <table style="border: 1px solid black">
@@ -64,11 +63,12 @@
             </td>
         </tr>
     </table>
-    <h2>Các bình luận</h2>
+
 
     <?php
 
     if (!empty($cus_join_ratcmt) && !empty($ad_join_ratcmt)) {
+        echo "<h2>Các bình luận</h2>";
         foreach ($cus_join_ratcmt as $each) {
             $cus = new diplay($each);
     ?>
@@ -85,35 +85,16 @@
                 </a>
             </button>
             <br>
-            <br>
-            <br>
-        <?php
-        }
-
-        foreach ($ad_join_ratcmt as $each) {
-
-            $ad = new diplay($each);
-        ?>
-            <dd>
-            <dt><?php $ad->show_name() ?></dt>
-            <dl><?php $ad->show_time() ?></dl>
-            <dl><?php $ad->show_rating() ?></dl>
-            <dl><?php $ad->show_comment() ?></dl>
-            </dd>
-            <button>
-                <a href="delete.php?news_id=<?= $news_id ?>&rating_comment_id=<?= $each['rating_comment_id'] ?>">
-                    Xóa
-                </a>
-            </button>
-            <br>
-            <br>
-            <br>
     <?php
         }
+    } else {
+        echo "<h1>Không có bình luận</h1>";
     }
     ?>
 
     <a href="../news/index.php">Trở lại danh sách bài đăng</a>
+    <br>
+    <a href="../../index.php">Trang chủ</a>
 </body>
 
 </html>

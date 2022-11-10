@@ -1,10 +1,10 @@
 <?php
-require 'query_function/sql_handeler.php';
-require 'query_function/CRUD.php';
+require 'sql_handeler.php';
+require 'CRUD.php';
 final class query_builder
 {
     use sql_handler;
-    use useful_query_func;
+    use query_command;
 
     private \mysqli $connect_db;
 

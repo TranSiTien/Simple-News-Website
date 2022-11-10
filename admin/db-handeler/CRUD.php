@@ -1,5 +1,5 @@
 <?php
-trait useful_query_func
+trait query_command
 {
     public function insert(string $table_name, $data)
     {
@@ -14,7 +14,7 @@ trait useful_query_func
 
     public function delete(string $table_name, string $condition = '')
     {
-        $sql = "delete from $table_name"  ;
+        $sql = "delete from $table_name";
         $condition = empty($condition) ? "" : "where $condition";
         $this->execute_sql("$sql $condition");
     }
@@ -30,27 +30,27 @@ trait useful_query_func
             "update %s set %s %s",
             $table_name,
             implode(',', $col_equal_val),
-            empty($condition)?"":"where $condition"
+            empty($condition) ? "" : "where $condition"
         );
         $this->execute_sql($sql);
     }
 
 
-    public function select(string $table_name, string $column, string $condition = "")
+    public function select(string $table_name, string $column, string $where_condition = "")
     {
 
         $sql = "select $column from $table_name";
-        $sql_condition = empty($condition)?"":"where $condition";
-        $result = $this->execute_sql("$sql $sql_condition");
+        $sql_where_condition = empty($where_condition) ? "" : "where $where_condition";
+        $result = $this->execute_sql("$sql $sql_where_condition");
         return mysqli_fetch_array($result, MYSQLI_ASSOC);
     }
     public function join(string $table_name1, string $table_name2, string $select_columns, string $on_condition = "", string $where_condition = "")
     {
-            $sql = "select $select_columns from $table_name1 join $table_name2";
-            $sql_on_condition = empty($on_condition)?"":"on $on_condition";
-            $sql_where_condition = empty($where_condition)?"":"where $where_condition";
-            $result = $this->execute_sql("$sql $sql_on_condition $sql_where_condition");
-            // $result = mysqli_fetch_array($result);
-            return $result;
+        $sql = "select $select_columns from $table_name1 join $table_name2";
+        $sql_on_condition = empty($on_condition) ? "" : "on $on_condition";
+        $sql_where_condition = empty($where_condition) ? "" : "where $where_condition";
+        $result = $this->execute_sql("$sql $sql_on_condition $sql_where_condition");
+        // $result = mysqli_fetch_array($result);
+        return $result;
     }
 }

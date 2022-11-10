@@ -13,7 +13,7 @@
     <?php
     $id = $_GET['id'];
 
-    require '../database/bootsDB.php';
+    require '../db-handeler/bootstrap.php';
 
     $record = $connect_DB->select('news', '*', "id=$id");
 

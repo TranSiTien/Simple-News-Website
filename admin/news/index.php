@@ -9,10 +9,11 @@
 </head>
 
 <body>
-    <h2>Danh seg bài đăng</h2>
+
+    <h2>Danh sách bài đăng</h2>
 
     <?php
-    require '../db-handeler/bootsDB.php';
+    require '../db-handeler/bootstrap.php';
     require 'pagination.php';
     require 'search.php';
 
@@ -104,7 +105,7 @@
         </button>
 
     <?php } ?>
-
+    <a href="../../index.php">Trang chủ</a>
 </body>
 
 </html>
