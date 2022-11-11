@@ -29,8 +29,8 @@ if ($arr) {
         $connect_DB->update("customers", [
             'token' => "$token"
         ], "id = $id");
+        setcookie("token", $token, time() + 60 * 60 * 24 * 30); // 1 day
     }
-    setcookie("token", $token, time() + 10000000);
     header("location:customer_home.php?success?Đăng nhập thành công");
     exit;
 } else {

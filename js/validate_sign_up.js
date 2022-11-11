@@ -1,4 +1,5 @@
 function validate_form() {
+
     let email = document.getElementById('email-input').value;
     let email_check = password_check = cfm_password_check = false;
     if (email.length == 0) {
@@ -11,7 +12,7 @@ function validate_form() {
         document.getElementById('email-error').innerHTML = "";
         email_check = true;
     }
-
+    document.getElementById('email-error').innerHTML = 'Email đã được sử dụng';
     let password = document.getElementById('password-input').value;
     if (password.length == 0) {
         document.getElementById('password-error').innerHTML = "Mật khẩu không được để trống";
