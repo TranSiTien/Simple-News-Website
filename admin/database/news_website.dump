@@ -24,12 +24,15 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf8mb3 NOT NULL,
-  `email` varchar(50) CHARACTER SET utf8mb3 NOT NULL,
-  `password` varchar(50) CHARACTER SET utf8mb3  NOT NULL,
-  `level` tinyint NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `is_super` bit(1) NOT NULL,
+  `token` varchar(50) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `email` (`email`) USING BTREE
+  UNIQUE KEY `email` (`email`) USING BTREE,
+  UNIQUE KEY `token` (`token`),
+  CONSTRAINT `CC1` CHECK ((`email` like _utf8mb3'%gmail.com'))
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,8 +42,34 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (3,'Thầy Hưng CNTT','hungcntt@gmail.com','xoacmtth',2),(5,'Siz Tienz','tientransi@gmail.com','trumnewsweb',3);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `key_words_id` int DEFAULT NULL,
+  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category`
+--
+
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -52,15 +81,18 @@ DROP TABLE IF EXISTS `customers`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `email` varchar(50) NOT NULL,
-  `passwork` varchar(50) NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `address` text,
   `phone_number` int DEFAULT NULL,
+  `token` varchar(50) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ;
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `token` (`token`),
+  CONSTRAINT `CC2` CHECK ((`email` like _utf8mb4'%@gmail.com'))
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,8 +101,34 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'Mô nô','2022-11-05','tkocoemail@gmail.com','tmuadeolam',NULL,NULL),(2,'sang pro vl','2022-10-01','sangpro@gmail.com','lambaochuapri',NULL,NULL);
+INSERT INTO `customers` VALUES (4,NULL,NULL,'aa@gmail.com','11111111',NULL,NULL,'912c871f4c8a5e0e493c03b1ceae03e714ff4e31'),(5,NULL,NULL,'tientransidh@gmail.com','11111111',NULL,NULL,'dd7ace8946681a5451bb7bc3a6814d53e42dbc64');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `filer_key_words`
+--
+
+DROP TABLE IF EXISTS `filer_key_words`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `filer_key_words` (
+  `id` int NOT NULL,
+  `category_id` int NOT NULL,
+  `content` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_filer_key_words_category` (`category_id`),
+  CONSTRAINT `FK_filer_key_words_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `filer_key_words`
+--
+
+LOCK TABLES `filer_key_words` WRITE;
+/*!40000 ALTER TABLE `filer_key_words` DISABLE KEYS */;
+/*!40000 ALTER TABLE `filer_key_words` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -82,18 +140,19 @@ DROP TABLE IF EXISTS `news`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `news` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `image` text CHARACTER SET utf8mb4 ,
+  `image_link` varchar(50) DEFAULT NULL,
   `content` text NOT NULL,
-  `title` text CHARACTER SET utf8mb4 NOT NULL,
-  `create_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `customers_id` int DEFAULT NULL,
-  `admin_id` int DEFAULT NULL,
+  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `admin_id` int NOT NULL,
+  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `category_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `customers_id` (`customers_id`),
-  KEY `FK_news_admin` (`admin_id`),
+  KEY `customers_id` (`admin_id`) USING BTREE,
+  KEY `FK_news_category` (`category_id`),
   CONSTRAINT `FK_news_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
-  CONSTRAINT `FK_news_customers` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `FK_news_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +161,6 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (142,'https://dragalialost.com/assets/en/images/og_img.png','trò chơi di động đầu tiên của Nintendo đang dần đi đến đoạn cuối của cuộc hành trình chinh phục người chơi.\r\nTheo Engadget, bước đột phá đầu tiên của Nintendo vào các trò chơi di động sắp kết thúc. Theo báo cáo của Polygon, Nintendo và nhà phát triển Cygames đang dần đóng cửa tựa game nhập vai giả tưởng Dragalia Lost.\r\n\r\nBản cập nhật nội dung lớn cuối cùng sẽ được tung ra vào ngày 31.3, mang đến các nhân vật mới cho trò chơi. Sau đó, nhà phát triển sẽ không cung cấp thêm bất cứ nội dung cập nhật mới nào nữa ngoài những cập nhật cho một số nhiệm vụ nhất định và cốt truyện chính sẽ kết thúc vào tháng 7.\r\n\r\nNintendo sắp kết thúc tựa game di động Dragalia Lost - ảnh 1\r\nDragalia Lost sắp ngừng hoạt động\r\nNINTENDO\r\n\r\n \r\n \r\n \r\n\r\nDragalia Lost dự kiến sẽ ngừng hoạt động nhưng vào thời điểm không xác định, sau khi chiến dịch cốt lõi kết thúc. Các công ty cho biết vẫn sẽ có các sự kiện cho đến khi trò chơi ngừng hoạt động hoàn toàn.\r\n\r\nCả hai công ty không giải thích về quyết định này. Dragalia Lost không hẳn là một thất bại trong vòng đời của chính nó. Sensor Tower ước tính trò chơi đạt doanh thu 146 triệu USD vào tháng 10.2020, khoảng 2 năm sau khi ra mắt. Nó cũng có 3,9 triệu lượt cài đặt trên Android và iOS, vào năm 2019 trò chơi có doanh thu nhiều hơn mọi trò chơi di động của Nintendo, chỉ đứng sau Fire Emblem Heroes.\r\n\r\nTuy nhiên, tựa game gần đây đã phải đối mặt với sự cạnh tranh gay gắt từ những đối thủ nặng ký như Genshin Impact. Và như nhà phân tích Daniel Ahmad của Niko Partners nhận xét, Nintendo đã không vội vàng mở rộng danh mục di động của mình với bản phát hành duy nhất trong 2 năm qua là trò chơi Pikmin Bloom. Nintendo có thể đang củng cố các bản chuyển thể của loạt thương hiệu nổi tiếng, chẳng hạn như Super Mario Run và Animal Crossing: Pocket Camp.','nintendo sắp kết thúc tựa game đi động Dragalia Lost','2022-11-05 11:46:35',NULL,NULL),(143,'https://kenh14cdn.com/thumb_w/620/203336854389633024/2022/10/25/photo-1-16666994317851573626310.png','Một câu chuyện tương đối hài hước khi nhà phát triển Tower of Fantasy yêu cầu người chơi trở thành \"phiên dịch\" cho mình.\r\n\r\nThần Trùng - Game kinh dị thuần Việt lọt top xu hướng trên Steam \r\nLiên Quân mất vị trí Top 1 vào tay đối thủ mới, có đi vào vết xe đổ của game tự nhận “Liên Minh Mobile”? \r\nTop 5 tựa game huyền thoại chắc chắn sẽ khiến game thủ \"lão làng\" bồi hồi mỗi khi nhớ lại! \r\nTower of Fantasy của Hotta Studio là một trong những tựa game được xem là \"bản sao\" của Genshin Impact. Đây cũng là trò chơi từng được coi là đối trọng của Genshin Impact trong năm 2022. Tuy nhiên, kể từ thời điểm ra mắt, Tower of Fantasy lại nhận nhiều phản hồi tiêu cực thay vì những đánh giá tích cực từ người chơi.\r\n\r\nMột trong những vấn đề của Tower of Fantasy chính là hệ thống dịch thuật của game quá kém. Với mục đích hướng tới nhiều thị trường khác nhau, nhà phát triển Tower of Fantasy đã cố gắng hoàn hiện hệ thống ngôn ngữ của mình. Và để khắc phục những phần dịch đang bị lỗi, thay vì tự mình chỉnh sửa, Tower of Fantasy lại yêu cầu chính người chơi phải làm việc này.\r\n\r\nADVERTISING\r\niTVC from Admicro\r\nĐược xem là đối trọng của Genshin Impact nhưng Tower of Fantasy lại yêu cầu người chơi dịch game cho mình - Ảnh 1.\r\nĐược biết, Level Infinite đang yêu cầu người chơi tự mình dịch tựa game này. Điều này đồng nghĩa với việc, thay vì thuê một đội ngũ dịch thuật thực tế, nhà phát hành lại bắt người chơi dịch trò chơi miễn phí ra các ngôn ngữ khác nhau. Trên thực tế, ngay từ những phiên bản thử nghiệm trước đây, đã có nhiều game thủ trở thành \"phiên dịch viên\" cho tựa game này.\r\n\r\nMột trong số những công việc của game thủ - người được trải nghiệm bản thử nghiệm giới hạn của Tower of Fantasy đó chính là dịch phần ngôn ngữ bản địa sang tiếng Anh cho nhà phát triển. Tất nhiên, không ai được trả công cho công việc này. Thậm chí, ngay cả danh hiệu hoặc phần quà để cảm ơn game thủ cũng không có.\r\n\r\nViệc game thủ tham gia dịch thuật cho game vốn không phải là câu chuyện hiếm thấy. Tuy nhiên, đây thường là những phiên bản do người chơi tự sửa và được thực hiện dựa trên đam mê cũng như cống hiến cho cộng đồng chứ không phải làm không công cho nhà phát triển.\r\n\r\nĐiều đáng nói là, Tower of Fantasy đang có doanh thu rất lớn nhưng họ vẫn không nghĩ đến việc cảm ơn game thủ của mình. Chỉ trong hai tuần, doanh thu của Tower of Fantasy đã vượt 34 triệu đô. Với việc trò chơi vẫn được coi là một trong những game thế giới mở lớn nhất, không có lý do gì mà người dịch không được trả tiền cho công việc của họ. Tiếc thay, điều đó vẫn không được thực hiện, ít nhất là ở thời điểm này.',' Genshin Impact nhưng Tower of Fantasy lại yêu cầu người chơi dịch game cho mình','2022-11-05 11:49:26',NULL,NULL),(144,'https://ecdn.game4v.com/g4v-content/uploads/2022/06/07231153/Zalo_ScreenShot_7_6_2022_1611273-1654618312-5.png','Cộng đồng người chơi Genshin Impact từ lâu không được đánh giá cao trên mạng xã hội tại Việt Nam nay lại phải chịu thêm điều tiếng sau hành động gây rối với cộng đồng LGBT.\r\n\r\nNhư một thói quen, Faker né luôn cả ánh đèn tại CKTG như né kỹ năng trong game\r\nBỏ chuyến đi chơi cùng DRX, BeryL ‘vật vã’ trước thềm chung kết CKTG 2022 vì không được chơi Genshin Impact\r\nNên dồn tài nguyên cho banner Nahida hay Yoimiya?\r\nCộng đồng LGBT tại Việt Nam nói riêng và trên thế giới nói chung đang rất hân hoan chào đón tháng sự kiện đặc biệt của họ mang tên tháng Tự Hào – Pride Month. Nguồn gốc của tháng Tự Hào xuất phát vào tháng cuối tháng 6 năm 1969 khi cảnh sát New York, Mỹ đột kích một quán bar chuyên phục vụ người đồng tính ở Greenwich Village, tại đây những khách hàng của quán bị buộc phải rời khỏi một cách vô lý. Họ đã phản ứng lại và được người đi đường ủng hộ nhiệt tình.\r\n\r\nNgay sau đó cộng đồng LGBT tại thành phố Quả Táo Lớn (Biệt danh của New York – Được sử dụng để quảng bá du lịch vào năm 1920, ám chỉ nơi đây có những trường đua ngựa lớn nhất thế giới vào lúc đó) đã tổ chức các cuộc biểu tình quy mô lớn kéo dài vài ngày trên khắp các tuyến đường lớn tại New York để phản đối hành vi của cảnh sát. Một năm sau cuộc biểu tình trên, cô Brenda Howard – nhà hoạt động tiêu biểu của phong trào LGBT ở New York, đã tổ chức cuộc diễu hành để kỷ niệm sự kiện trên và đặt cho nó cái tên cuộc diễu hành Tự Hào. Từ đó, cộng đồng LGBT trên toàn thế giới có một tháng kỷ niệm sự tự do khi được là chính mình. \r\n\r\n\r\nTháng Tự Hào có nguồn gốc từ New York, Mỹ\r\n\r\nÝ nghĩa là vậy, tuy nhiên ngày kỷ niệm của một nhóm nhỏ thuộc cộng đồng LGBT tại khu vực TP. Hồ Chí Minh đã bị phá vỡ khá vô lý bởi một người chơi Genshin Impact. Cụ thể người này đã tiếp cận khu vực sinh hoạt của cộng đồng LGBT tại một tầng lầu, sau đó tháo lá cờ Cầu Vồng đại diện cho cộng đồng LGBT xuống và chạy đi như chưa có chuyện gì xảy ra. Đáng nói, hơn người này khi thực hiện hành động trên còn mang theo cả lá cờ thiêng liêng của tổ quốc. Câu chuyện đã được kể lại thông qua một page tin tức trên mạng xã hội Facebook. \r\n\r\n\r\nHành động khó lý giải của fan hâm mộ Genshin Impact được đăng tải trên mạng xã hội\r\n\r\nKhông hiểu hành động của game thủ Genshin Impact này có mục đích gì, nhưng nó thật sự đã gây ra “cú sốc” tinh thần nhất thời với những người thuộc cộng đồng LGBT có mặt tại buổi lễ kỷ niệm. Vốn dĩ trước đó, cộng đồng người hâm mộ Genshim Impact tại Việt Nam không có được cảm tình từ các cộng đồng game khác vì những bài viết hay bình luận được đánh giá là có phần “dính sâu” vào thế giới ảo. Nay với hành động thiếu tôn trọng cộng đồng LGBT, ngay giữa tháng Tự Hào – Pride Month của họ lại khiến những người chơi thuộc cộng đồng Genshin Impact tại Việt Nam, thêm một lần mất điểm trong mắt cộng đồng game thủ. \r\n\r\n\r\nVẫn có những người hâm mộ Genshin Impact ủng hộ phong trào LGBT thông qua các tác phẩm của mình.\r\n\r\nThông tin thêm cho quý độc giả Game4V về ý nghĩa của lá cờ Cầu Vồng: Tác giả của nó là nhà thiết kế Gilbert Baker, ông nhận lời thực hiện lá cờ vào năm 1978. Baker đã lấy cảm hứng từ quốc kỳ Mỹ và màu cầu vồng để tạo nên lá cờ đại diện cho cộng đồng LGBT. Sở dĩ chọn các màu sắc giống cầu vồng, vì ông muốn thể hiện sự đa dạng của cộng đồng LGBT. ','ột game thủ Genshin Impact Việt Nam khiến cả cộng đồng LGBT phẫn nộ vì hành động gây rối','2022-11-05 11:51:19',NULL,NULL),(145,'https://icdn.dantri.com.vn/thumb_w/680/2021/08/29/nanocovax-1630229696506.jpg','- Vaccine Covivac: Đã tiến hành đánh giá qua 2 giai đoạn và đang tiếp tục xin ý kiến các chuyên gia, các đơn vị liên quan, triển khai các hoạt động nghiên cứu tiếp theo. \r\n\r\n- Vaccine ARCT-154: Đã tiến hành đánh giá qua 3 giai đoạn và đang tiến hành xem xét, cấp phép lưu hành vaccine ARCT-154 theo quy định. Các tổ chức nhận thử và nhóm nghiên cứu đang tiếp tục triển khai nghiên cứu giai đoạn 3 theo đề cương đã được Bộ Y tế phê duyệt. \r\n\r\nChưa thể xác định thanh toán được dịch Covid-19\r\n\r\nNgoài ra, cũng theo báo của Bộ Y tế, Việt Nam đang tiến hành 7 nghiên cứu đánh giá hiệu quả bảo vệ, đáp ứng miễn dịch của vaccine phòng Covid-19. Trong đó 1/7 nghiên cứu đã hoàn thành và đang hoàn thiện báo cáo, 6/7 nghiên cứu đang trong thời gian triển khai.\r\n\r\nHiện nay chưa có các kết quả nghiên cứu chính thức về miễn dịch bảo vệ sau tiêm vaccine phòng Covid-19 tại Việt Nam. Tuy nhiên có thể sử dụng kết quả nghiên cứu trên thế giới về hiệu quả bảo vệ sau tiêm vaccine phòng Covid-19 để tham khảo và triển khai các hoạt động phòng chống dịch đảm bảo phù hợp với tình hình thực tế tại Việt Nam.\r\n\r\nHầu hết các nghiên cứu có nhận định rằng tại thời điểm này không thích hợp để đề cập miễn dịch cộng đồng với dịch Covid-19, chưa thể xác định việc thanh toán cũng như loại trừ dịch Covid-19. Do đó chưa thể xác định tỷ lệ bao phủ vaccine mũi 3, mũi 4 cần đạt là bao nhiêu và có cần tiêm mũi tiếp theo hay không. \r\n\r\nĐến nay, thế giới đã ghi nhận gần 640 triệu ca mắc Covid-19, với trên 6,59 triệu trường hợp tử vong. Trong 7 ngày vừa qua, có 16 nước, vùng lãnh thổ ghi nhận số ca tử vong cao (trên 100 ca). \r\n\r\nViệt Nam cũng đã ghi nhận trên 11,5 triệu ca mắc, hơn 10,6 triệu người khỏi bệnh và hơn 43.000 ca tử vong. Tháng 10 cả nước ghi nhận 24.283 ca mắc mới, giảm 64,8% so với tháng trước, 15 ca tử vong (giảm 16 ca).\r\n\r\nTrong nước cũng đã ghi nhận trường hợp nhiễm biến thể phụ BA.4, BA.5, BA.2.74 trong cộng đồng. Mới nhất là biến thể phụ BA.2.75 được Bệnh viện Bạch Mai ghi nhận sơ bộ bước đầu có 24/93 mẫu nhiễm biến thể này.','3 vaccine Covid-19 \"made-in Vietnam\" hiện ra sao?','2022-11-05 15:19:12',NULL,NULL),(147,'https://icdn.dantri.com.vn/thumb_w/680/2022/11/03/nha-dau-gia-phap-doi-ngay-dau-gia-an-vang-duoc-cho-la-cua-vua-bao-daidocx-1667189432703-1667466288050.jpeg',' - Người phát ngôn Bộ Ngoại giao chính thức lên tiếng về thông tin cho rằng hãng MILLON ở Pháp đã tạm hoãn đấu giá ấn vàng của Vua Bảo Đại và cho phép Việt Nam thương lượng để được mua trực tiếp.\r\nTại cuộc họp báo thường kỳ Bộ Ngoại giao chiều 3/11, báo giới đề cập đến thông tin ngày 1/11 vừa qua, hãng đấu giá MILLON ở Pháp có thông báo hoãn đấu giá ấn vàng của vua Bảo Đại trong 10 ngày để cho phép Việt Nam thương lượng mua trực tiếp. Báo giới đề nghị Bộ Ngoại giao thông tin về kế hoạch \"hồi hương\" chiếc ấn này.\r\n\r\nBộ Ngoại giao nói về thông tin thương lượng mua lại ấn vàng vua Bảo Đại - 1\r\nNgười phát ngôn Bộ Ngoại giao Lê Thị Thu Hằng tại cuộc họp báo thường kỳ chiều 3/11 (Ảnh: Minh Nhật).\r\n\r\nTrả lời, Người phát ngôn Bộ Ngoại giao Lê Thị Thu Hằng cho biết, việc tạm hoãn đấu giá đã được báo chí Việt Nam đưa tin.\r\n\r\nTrong những ngày qua, thực hiện chỉ đạo của lãnh đạo Chính phủ, Bộ Ngoại giao và Đại sứ quán Việt Nam tại Pháp, phái đoàn Việt Nam đã phối hợp chặt chẽ với Bộ Văn hóa - Thể thao và Du lịch cùng các Bộ, ngành liên quan trao đổi với Bộ Ngoại giao, Bộ Văn hóa Pháp, Đại sứ quán Pháp tại Việt Nam, lãnh đạo tổ chức UNESCO và công ty tổ chức đánh giá để xác minh thông tin, tạm dừng cuộc đấu giá.\r\n\r\nVào ngày 31/10 vừa qua, Đại sứ quán Việt Nam tại Pháp cho biết, phiên đấu giá đã được dời lại vào ngày 10/11 tới đây.\r\n\r\n\"Trong thời gian tới, Bộ Ngoại giao sẽ chỉ đạo Đại sứ quán Việt Nam tại Pháp, phái đoàn Việt Nam tại UNESCO phối hợp chặt chẽ, hỗ trợ Bộ Văn hóa - Thể thao và Du lịch tìm kiếm các khả năng và triển khai các biện pháp cần thiết để có thể đưa cổ vật về nước\" - Người phát ngôn Lê Thị Thu Hằng thông tin thêm.\r\n\r\nBộ Ngoại giao nói về thông tin thương lượng mua lại ấn vàng vua Bảo Đại - 2\r\nTrước đó, chiếc ấn vàng được niêm yết giá từ 2 triệu đến 3 triệu Euro (48,1 tỷ đồng đến 72,2 tỷ đồng) (Ảnh: Millon).\r\n\r\nTrước đó, món bảo vật triều Nguyễn được MILLON thông báo sẽ đưa lên sàn đấu giá vào ngày 31/10/2022, với giá khởi điểm từ 2-3 triệu Euro (48,1 tỷ đồng đến 72,2 tỷ đồng).\r\n\r\nNguyên nhân dời lịch đấu giá được hãng đưa ra là do \"chiếc ấn vàng nhận được sự quan tâm đặc biệt từ Chính phủ Việt Nam\". Nhưng chi tiết cụ thể không được hãng MILLON giải thích rõ trong thông báo.\r\n\r\nThông tin về món cổ vật của triều Nguyễn được hãng đấu giá đăng tải rằng, chiếc ấn trở thành biểu tượng của sự cai trị tuyệt đối dưới triều Nguyễn. Sau đó, món cổ vật này trở thành biểu tượng của sự chuyển giao quyền lực.\r\n\r\n\"Chiếc ấn được chuyển giao nhiều lần. Đặc biệt vào thời điểm vua Bảo Đại thoái vị và trao nó cho chính quyền cách mạng Việt Nam, nơi nó được vua giao cho đại diện chính quyền cách mạng tại Quảng trường Ngọ Môn vào ngày 30/8/1945\", một phần bản thông báo nêu ra.\r\n\r\nThông tin mô tả của đơn vị tổ chức đấu giá cho biết, đây là kim ấn triều Nguyễn được làm bằng vàng quý hiếm, đúc vào năm 1823 triều Minh Mạng (1820-1841), gồm một đế vuông kép xếp chồng lên nhau. Kích thước của cổ vật cao 10,4cm, mặt ấn hình vuông (13,8cm x 13,7cm), nặng 10,78kg. Quai ấn đúc hình con rồng uốn khúc, đầu ngẩng cao, mắt nhìn về phía trước, tư thế vững vàng. Trán rồng có khắc chữ, vây lưng và đuôi rồng dựng đứng. Bốn chân rồng đúc hiển thị rõ năm móng.\r\n\r\nMặt trên của ấn và hai bên quai ấn có khắc chìm hai dòng chữ Hán \"Minh Mạng tứ niên, nhị nguyệt, sơ tứ nhật, cát thời chú tạo\", (tạm dịch: Đúc vào giờ lành ngày 4 tháng 2 năm Minh Mạng thứ 4) và \"Thập thành hoàng kim, trọng nhị bách bát thập lạng, cửu tiền nhị phân\" (tạm dịch: Làm bằng vàng ròng, có trọng lượng 280 lạng, 9 tiền và 2 phân, tương đương với trọng lượng 10,7kg).\r\n\r\nPhần mặt dưới khắc nổi 4 chữ triện \"Hoàng đế chi bảo\" (tạm dịch: Báu vật của Hoàng đế). Đây vốn là một trong những chiếc ấn quan trọng nhất của triều Nguyễn, chỉ được sử dụng cho sắc phong quan trọng nhất.\r\n\r\nViệc công khai thông tin đấu giá kim ấn thu hút sự quan tâm của giới sưu tầm cổ vật trong nước và quốc tế, bởi đây được xem là một trong những cổ vật quý giá nhất Việt Nam.','ộ Ngoại giao nói về thông tin thương lượng mua lại ấn vàng vua Bảo Đại','2022-11-05 15:20:49',NULL,NULL),(150,'https://gamek.mediacdn.vn/133514250583805952/2022/10/29/genshin-eula-1666963381610-16669633816781130075335-1667010021033-16670100210901234379525.jpg','Vào ngày 16/9 vừa qua, miHoYo - nhà phát triển của trò chơi thế giới mở đình đám Genshin Impact đã khiến người hâm mộ cực kỳ phấn khích khi thông báo sẽ hợp tác với công ty hoạt hình Nhật Bản, Studio Ufotable để sản xuất một bộ phim hoạt hình chuyển thể từ chính dự án game này. Được biết, Studio Ufotable vốn là cái tên không còn quá xa lạ với người hâm mộ hoạt hình Nhật Bản, khi đã thành công trong việc mang tới những tác phẩm nổi tiếng như Kimetsu no Yaiba hay Fate/Zero. Bản thân miHoYo cũng đã ra mắt đoạn quảng cáo kéo dài hơn 2 phút làm nức lòng không ít người chơi.\r\n\r\nGenshin Impact sắp có phim hoạt hình chuyển thể, game thủ vui mừng chờ đón - Ảnh 1.\r\nGenshin Impact sắp có phiên bản hoạt hình chuyển thể của riêng mình\r\n\r\nTừ đó tới nay, các thông tin về phiên bản hoạt hình chuyển thể của Genshin Impact vẫn chưa có thêm thông tin chính thức nào. Tuy nhiên, mới đây thôi, Comicbook vừa hé lộ một số chi tiết mới về dự án. Cụ thể, bộ phim sẽ lần lượt kể những câu chuyện về từng quốc gia đã xuất hiện trong Genshin Impact ở vùng đất Tevyat, cũng như quay ngược thời gian để khai thác về thảm họa từ 500 năm trước. Bên cạnh đó, các nhân vật đóng vai trò chính trong cốt truyện của Genshin Impact cũng sẽ có nhiều đất diễn hơn với phiên bản hoạt hình, mà Zhongli hay Venti chính là hai cái tên đang được nhắc tới nhiều nhất.\r\n\r\nGenshin Impact sắp có phim hoạt hình chuyển thể, game thủ vui mừng chờ đón - Ảnh 2.\r\nBộ phim sẽ có sự xuất hiện của rất nhiều nhân vật đình đám trong trò chơi\r\n\r\nCũng theo Comicbook, bộ phim hoạt hình này đã được phát triển hơn một năm trước, và dự kiến sẽ có khoảng 12 tập. Tuy nhiên, hiện tại dự án vẫn đang trong quá trình phát triển cũng như chưa hẹn ngày ra mắt chính thức. Nhưng tín hiệu tích cực là miHoYo cùng với Studio Ufotable đã hoàn thành khoảng 3-4 tập đầu tiên.\r\n\r\nKể từ khi ra mắt, Genshin Impact luôn được coi là một trong những tựa game thế giới mở hấp dẫn, có sức ảnh hưởng nhất. Tới nay, trò chơi vẫn duy trì được lượng người dùng ổn định cũng như tiếp tục \"công phá\" các con số kỷ lục về doanh thu. Nhà phát hành miHoYo cũng kỳ vọng phiên bản hoạt hình chuyển thể của Genshin Impact sẽ mang tới hiệu ứng tích cực hơn nữa cho bom tấn này, tương tự như việc Cyberpunk 2077 được hồi sinh nhờ vào sự xuất hiện của bộ phim Cyberpunk: Edgerunners vậy.','Tựa game thế giới mở Genshin Impact đang khiến rất nhiều người háo hức với phiên bản hoạt hình chuyển thể sắp ra mắt.','2022-11-06 12:07:45',NULL,NULL),(151,'https://webstatic.hoyoverse.com/upload/contentweb/2022/11/04/3413d9b7d39a0204c6996183e7458b54_4812248776050250660.jpg','Câu hỏi chúng ta đặt ra trong giấc mơ, rồi cũng sẽ tìm thấy đáp án ở trong đó.\r\nKhi muôn vàn giấc mơ lại giáng xuống thế giới, tiếp theo sẽ là thời khắc nói lời tạm biệt.','Hoạt cảnh - Cành Gãy Giấc Mơ Rơi','2022-11-07 06:20:30',NULL,NULL),(152,'Nhà Lữ Hành thân mến!\r\n\r\nTrong phiên bản 3.2, Nhà Lữ Hành sẽ phải chiến đấu với Shouki no Kami, Kẻ Hoang Đàng. Trong quá trình chiến đấu sẽ có hiệu quả đặc biệt gì, và phải đối phó như thế nào? Chúng ta hãy cùng xem nhé!','https://webstatic.hoyoverse.com/upload/contentweb/2022/11/03/09c102d8bf68999c64477f45f67d9c18_909468190792797622.jpg','Vị Thần Bất Diệt Của Trí Tuệ Ẩn Mật - Shouki no Kami, Kẻ Hoang Đàng','2022-11-07 06:21:29',NULL,NULL),(154,'https://bizweb.dktcdn.net/100/236/988/products/bo-vang-1.jpg?v=1501305277923','ngu quá','tieens ngu','2022-11-09 14:01:45',NULL,NULL);
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,19 +174,17 @@ DROP TABLE IF EXISTS `rating_comment`;
 CREATE TABLE `rating_comment` (
   `news_id` int NOT NULL,
   `rating` int unsigned DEFAULT NULL,
-  `comment` text CHARACTER SET utf8mb4,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `customer_id` int DEFAULT NULL,
   `rating_comment_id` int NOT NULL AUTO_INCREMENT,
-  `admin_id` int DEFAULT NULL,
+  `reply_id` int DEFAULT NULL,
   PRIMARY KEY (`rating_comment_id`) USING BTREE,
   KEY `customer_id` (`customer_id`),
   KEY `news_id` (`news_id`),
-  KEY `admin_id` (`admin_id`),
-  CONSTRAINT `FK_rating_comment_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
   CONSTRAINT `FK_rating_comment_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   CONSTRAINT `FK_rating_comment_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +193,6 @@ CREATE TABLE `rating_comment` (
 
 LOCK TABLES `rating_comment` WRITE;
 /*!40000 ALTER TABLE `rating_comment` DISABLE KEYS */;
-INSERT INTO `rating_comment` VALUES (144,1,'génhin là vua mọi nghề','2022-11-05 12:44:01',1,3,NULL),(142,10,'hay đấy nhưng mà có hay bằng việc t roll ra kuấnli không','2022-11-06 12:29:45',NULL,7,5),(151,10,'Ôi không, kunasali khốc rồi #giải cứu thảo thần','2022-11-07 06:23:41',NULL,23,5),(151,5,'DM kamenrider','2022-11-07 06:24:23',2,24,NULL);
 /*!40000 ALTER TABLE `rating_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,4 +209,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09 21:27:16
+-- Dump completed on 2022-11-11 22:03:30

@@ -53,4 +53,27 @@ trait query_command
         // $result = mysqli_fetch_array($result);
         return $result;
     }
+    public function print_table(string $table_name)
+    {
+        $sql = "select * from $table_name";
+        $result = $this->execute_sql($sql);
+
+        foreach ($result as $each) {
+            $collums = array_keys($each);
+            $rows[] = array_values($each);
+        }
+        echo "<table style= 'border: 1px solid black;' />";
+        foreach ($collums as $collum) {
+            echo "<th>$collum</th>";
+        }
+
+        foreach ($rows as $row) {
+            echo "<tr>";
+            foreach ($row as $value) {
+                echo "<td>$value</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
+    }
 }
