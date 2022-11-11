@@ -21,6 +21,9 @@
         <textarea name="image"></textarea>
         <br>
         <br>
+        category_id
+        <input type="text" name="category_id">
+        <br>
         <button type="submit">Thêm</button>
     </form>
 </body>

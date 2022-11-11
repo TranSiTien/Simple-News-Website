@@ -19,7 +19,7 @@
     $news = $connect_DB->select('news', "*", "id = $news_id");
     $rating_comment = $connect_DB->select('rating_comment', "*", "customer_id = $news_id");
 
-    $cus_join_ratcmt = $connect_DB->join("customers", "rating_comment", "*", "customers.id = rating_comment.customer_id", "news_id = $news_id");
+    $admin_join_ratcmt = $connect_DB->join("admin", "rating_comment", "*", "admin.id = rating_comment.admin_id", "news_id = $news_id");
     ?>
 
     <table style="border: 1px solid black">
@@ -67,9 +67,9 @@
 
     <?php
 
-    if (!empty($cus_join_ratcmt) && !empty($ad_join_ratcmt)) {
+    if (!empty($admin_join_ratcmt)) {
         echo "<h2>Các bình luận</h2>";
-        foreach ($cus_join_ratcmt as $each) {
+        foreach ($admin_join_ratcmt as $each) {
             $cus = new diplay($each);
     ?>
             <dd>

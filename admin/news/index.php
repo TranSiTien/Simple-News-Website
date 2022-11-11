@@ -105,7 +105,7 @@
         </button>
 
     <?php } ?>
-    <a href="../../index.php">Trang chủ</a>
+    <a href="../index.php">Trang chủ</a>
 </body>
 
 </html>
