@@ -1,7 +1,7 @@
 <?php
 trait query_command
 {
-    public function insert(string $table_name, $data)
+    public function insert(string $table_name, array $data)
     {
         $sql = sprintf(
             'insert into %s (%s) values (%s)',

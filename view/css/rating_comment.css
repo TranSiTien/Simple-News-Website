@@ -1,0 +1,14 @@
+.sumary {
+    padding: 10px;
+    margin: 10px;
+}
+
+.comment_header {
+    background-color: #fff;
+    border: 3px solid green;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    margin: 0 auto;
+    padding: 20px;
+    width: 500px;
+}

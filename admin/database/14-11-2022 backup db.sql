@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customers_id` int NOT NULL,
-  `browse_admin_id` int NOT NULL,
+  `browse_admin_id` int DEFAULT NULL,
   `title` text NOT NULL,
   `content` text NOT NULL,
   `image` varchar(50) DEFAULT NULL,

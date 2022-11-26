@@ -1,39 +1,63 @@
 <?php
+session_start();
+
+require_once 'admin/db-handeler/bootstrap.php';
+require_once 'admin/sercurity.php';
 
 
-require 'admin/db-handeler/bootstrap.php';
-if (empty($_POST['email']) || empty($_POST['password'])) {
-    header('location:sign_up_form.php?error=Thiếu thông tin!');
+
+//validate input information in sign up form again
+if (empty($_POST['customers_email']) || empty($_POST['customers_password'])) {
+    $_SESSION['email_input'] = $_POST['customers_email'];
+    header('location:login_form.php?error=Thiếu thông tin!');
     exit;
 }
 
+echo "<pre>";
+var_dump($_SESSION);
+echo "</pre>";
 
-$email = $_POST['email'];
-$password = $_POST['password'];
-if (isset($_POST['remember'])) {
+$email = $_POST['customers_email'];
+$password = $_POST['customers_password'];
+if (isset($_POST['customers_remember'])) {
     $remember = true;
 } else {
     $remember = false;
 }
-$sql = "select id, token from customers where email = '$email' and password = '$password'";
+
+
+$sql = "select id, token, name ,password from customers where email = '$email'";
 $result = $connect_DB->execute_sql($sql);
 $arr = mysqli_fetch_assoc($result);
 
-if ($arr) {
-    session_start();
-    $id = $arr['id'];
-    $_SESSION['id'] = $id;
-    $token = openssl_random_pseudo_bytes(20);
-    $token = bin2hex($token);
-    if ($remember) {
-        $connect_DB->update("customers", [
-            'token' => "$token"
-        ], "id = $id");
-        setcookie("token", $token, time() + 60 * 60 * 24 * 30); // 1 day
-    }
-    header("location:customer_home.php?success?Đăng nhập thành công");
-    exit;
-} else {
-    header("location:login_form.php?error=Sai thông tin đăng nhập");
+
+if (!$arr) {
+    $_SESSION['email_input'] = $email;
+    header("location:login_form.php?error=Email không tồn tại");
     exit;
 }
+if ($arr['password'] != $password) {
+    $_SESSION['email_input'] = $email;
+    header("location:login_form.php?error=Mật khẩu không đúng");
+    exit;
+}
+
+$id = $arr['id'];
+$_SESSION['customer_id'] = $id;
+$_SESSION['customer_email'] = $email;
+$_SESSION['customer_name'] = $arr['name'];
+
+// if user check remember me then create cookie with token exist a month
+$token = makeToken();
+if ($remember) {
+    $connect_DB->update("customers", [
+        'token' => "$token"
+    ], "id = $id");
+    setcookie("customer_token", $token, time() + 60 * 60 * 24 * 30); // set cookie customer token for 30 days
+}
+
+
+// header("location:" . $_SESSION['previous_page']['path'] . "?success=Đăng nhập thành công");
+
+header("location:index.php?success?Đăng nhập thành công");
+exit;

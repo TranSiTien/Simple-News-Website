@@ -72,7 +72,7 @@
         echo "<h1>Không có bình luận</h1>";
     }
     ?>
-    <a href="index.php">Trang chủ</a>
+    <a href="customers_home.php">Trang chủ</a>
 </body>
 
 </html>

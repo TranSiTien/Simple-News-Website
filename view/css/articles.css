@@ -1,0 +1,39 @@
+.article_item {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 2rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin: 20px 20px;
+    padding: 20px;
+}
+
+.article_thumb {
+    text-align: center;
+}
+
+.article_thumb img {
+    width: 800px;
+    height: 500px;
+    border-radius: 2rem;
+}
+
+.article_title a {
+    font-size: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    padding-bottom: 2rem;
+}
+
+.article_title a:hover {
+    color: blue;
+}
+
+.article_excerpt a {
+    font-size: 16px;
+    color: gray;
+    margin-bottom: 10px;
+    padding-bottom: 2rem;
+    text-decoration: none;
+}
