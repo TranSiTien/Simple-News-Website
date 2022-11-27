@@ -32,3 +32,6 @@ $image = $news['image'];
         </p>
     </div>
 </article>
+<?php
+
+?>
