@@ -1,9 +1,8 @@
 <!-- frontend validate -->
+
 <script>
     function validate_form() {
-
         let email = document.getElementById('email-input').value;
-        let email_check = password_check = cfm_password_check = false;
         if (email.length == 0) {
             document.getElementById('email-error').innerHTML = "Email không được để trống";
             email_check = false;
@@ -28,40 +27,30 @@
             password_check = true;
         }
 
-        let cfm_password = document.getElementById("cfm_password-input").value;
-        if (password == cfm_password) {
-            cfm_password_check = true;
-            document.getElementById('cfm_password-error').innerHTML = "";
-        } else {
-            cfm_password_check = false;
-            document.getElementById('cfm_password-error').innerHTML = "Mật khẩu nhập lại không đúng";
-        }
 
-        if (email_check && password_check && cfm_password_check) {
+        if (email_check && password_check) {
             return true;
         }
         return false;
     }
 </script>
 
-
 <!-- backend validate -->
 <script>
     <?php
-    session_start();
+
     if (isset($_SESSION['email_input'])) {
-        echo "document.getElementById('email-input').setAttribute('value','" . $_SESSION['email_input'] . "');";
+        echo "document.getElementById('email-input').setAttribute('value','" . $_SESSION['email_input'] .
+            "');";
     }
     if (isset($_GET['error'])) {
-        if ($_GET['error'] == "Email đã được sử dụng") {
-            echo "document.getElementById('email-error').innerHTML = '" . $_GET['error'] . "';";
+        if ($_GET['error'] == "Email không tồn tại") {
+            echo "document.getElementById('email-error').innerHTML = '" . $_GET['error'] .
+                "';";
         }
-        if ($_GET['error'] == "Mật khẩu gồm tối thiểu 8 kí tự") {
-            echo "document.getElementById('password-error').innerHTML = '" . $_GET['error'] . "';";
-        }
-
-        if ($_GET['error'] == "Mật khẩu nhập lại không đúng") {
-            echo "document.getElementById('cfm_password-error').innerHTML = '" . $_GET['error'] . "';";
+        if ($_GET['error'] == "Mật khẩu không đúng") {
+            echo "document.getElementById('password-error').innerHTML = '" . $_GET['error'] .
+                "';";
         }
     }
     // session_unset();

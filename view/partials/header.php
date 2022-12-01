@@ -1,9 +1,6 @@
-    <?php
-    $_SESSION['previous_page'] = parse_url($_SERVER['REQUEST_URI']);
-    var_dump($_SESSION);
-    ?>
     <!-- header bar -->
     <header class="header_container">
+        <!-- logo link to home page -->
         <div class="logo">
             <a href="index.php">
                 <img src="img/newspaper.png">
@@ -11,26 +8,28 @@
             </a>
         </div>
 
+        <!-- only home page need search bar -->
         <?php
-        if ($_SERVER['REQUEST_URI'] == "/index.php") {
+        if (Request::uri() == "/") {
         ?>
             <form action="" class="search_form">
                 <input type="search" name="search" value="<?php echo $search_key ?>">
-                <button><img src="img/loupe.png" alt="không thể tải ảnh"></button>
+                <button><img src="img/loupe.png" alt="kính lúp"></button>
             </form>
-        <?php } ?>
-        <?php
+        <?php }
 
-        if (!isset($_SESSION['customer_id'])) {
+        if (!is_customer()) {
         ?>
 
-            <div class="authentication">
-                <a href="sign_up_form.php">Đăng kí</a>
-                <a href="login_form.php">Đăng nhập</a>
+            <div class="identification">
+                <a href="/signup">Đăng kí</a>
+                <a href="/login">Đăng nhập</a>
             </div>
         <?php } else { ?>
-            <div class="authentication">
-                <a href="logout_process.php">Đăng xuất</a>
+            <div class="identification">
+                <a href="/logoutProcess">Đăng xuất</a>
             </div>
-        <?php } ?>
+        <?php }
+        ?>
+
     </header>

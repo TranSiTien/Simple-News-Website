@@ -11,11 +11,11 @@
 }
 
 
-.authentication {
+.identification {
     margin-right: 20px;
 }
 
-.authentication a {
+.identification a {
     border: 3px solid black;
     border-radius: 5px;
     box-shadow: 0 0 5px #ccc;
@@ -24,6 +24,11 @@
     padding: 10px 15px;
     text-decoration: none;
     margin: 0.5rem;
+}
+
+.identification a:hover {
+    background-color: gray;
+    color: gold;
 }
 
 .header_container {

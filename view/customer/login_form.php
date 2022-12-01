@@ -1,10 +1,3 @@
-<?php
-session_start();
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre>";
-
-?>
 <html>
 
 <head>
@@ -15,7 +8,7 @@ echo "</pre>";
 </head>
 
 <body>
-    <form action="login_process.php" class="form_container" method="post">
+    <form action="/loginProcess" class="form_container" method="post">
         <h2 class="login_title"> Đăng Nhập </h2>
         <fieldset class="input_container">
             <label for="email">Email:</label>
@@ -29,22 +22,25 @@ echo "</pre>";
             <br>
 
 
-            <input type="checkbox" name="customers_remember">
             <label for="remember">Ghi nhớ đăng nhập</label>
+            <input type="checkbox" name="customers_remember">
+
             <br>
         </fieldset>
 
         <button type="submit" onclick="return validate_form()" class="submit_button">Đăng Nhập</button>
+
+        <!-- other suggestion -->
         <div class="sign_up_suggest">
             <span>Bạn chưa có tài khoản?</span>
-            <a href="sign_up_form.php">Đăng ký</a>
+            <a href="/signup">Đăng ký</a>
         </div>
-        <a href="index.php" class="home_link">Trang chủ</a>
+        <a href="/" class="home_link">Trang chủ</a>
 
     </form>
 
-    <!-- frontend validate -->
     <?php
-    require_once "js/validate_login.php";
+    require_once __DIR__ . "/../js/validate_login.php";
     ?>
+
 </body>

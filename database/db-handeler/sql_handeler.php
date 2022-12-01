@@ -6,7 +6,6 @@ trait sql_handler
     public function execute_sql(string $sql)
     {
         try {
-            var_dump($sql);
             return mysqli_query($this->get_connect_db(), $sql);
         } catch (Exception $e) {
             die("sql syntax error - sql : $sql" . $e->getMessage());

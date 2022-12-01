@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <form action="sign_up_process.php" class="form_container" method="post">
+    <form action="/signupProcess" class="form_container" method="post">
         <h2 class="login_title"> Tạo tài khoản dành riêng cho bạn </h2>
         <fieldset class="input_container">
             <label for="email">Email:</label>
@@ -31,16 +31,15 @@
         <button type="submit" onclick="return validate_form()" class="submit_button">Đăng ký</button>
         <div class="login_suggest">
             <span>Bạn đã có tài khoản?</span>
-            <a href="login_form.php">Đăng nhập</a>
+            <a href="/login">Đăng nhập</a>
         </div>
-        <a href="index.php" class="home_link">Trang chủ</a>
+        <a href="/" class="home_link">Trang chủ</a>
     </form>
+
     <?php
-    require_once "js/validate_sign_up.php";
+    require_once __DIR__ . "/../js/validate_sign_up.php";
     ?>
 
-    <!-- frontend validate -->
-    <script type="text/javascript" src="js/validate_sign_up.js"></script>
 </body>
 
 </html>

@@ -5,4 +5,4 @@ session_unset();
 // destroy the session
 session_destroy();
 setcookie("admin_token", "", time() - 1);
-header("location:index.php?success:Đăng xuất thành công");
+header("location:/admin/login?success:Đăng xuất thành công");

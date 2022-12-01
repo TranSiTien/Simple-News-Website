@@ -1,4 +1,5 @@
 <?php
+// if user log out then delete cookie and session
 //delete all session variables
 
 session_start();
@@ -7,4 +8,5 @@ session_unset();
 
 session_destroy();
 setcookie("customer_token", "", time() - 3600);
-header("location:index.php?success:Đăng xuất thành công");
+
+header("location:/?success:Đăng xuất thành công");
