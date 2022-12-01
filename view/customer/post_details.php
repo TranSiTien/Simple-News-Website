@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,9 +15,9 @@ session_start();
 <body>
 
     <?php
-    require_once "view/partials/header.php";
-    require_once "view/partials/post.php";
-    require_once "view/partials/rating_coment.php";
+    require_once __DIR__ . "/../partials/header.php";
+    require_once __DIR__ . "/../partials/post.php";
+    require_once __DIR__ . "/../partials/rating_coment.php";
     ?>
 </body>
 

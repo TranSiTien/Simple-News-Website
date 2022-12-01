@@ -2,7 +2,7 @@
     <header class="header_container">
         <!-- logo link to home page -->
         <div class="logo">
-            <a href="index.php">
+            <a href="/">
                 <img src="img/newspaper.png">
                 <span>Báo Thức 4.0</span>
             </a>
@@ -20,7 +20,6 @@
 
         if (!is_customer()) {
         ?>
-
             <div class="identification">
                 <a href="/signup">Đăng kí</a>
                 <a href="/login">Đăng nhập</a>

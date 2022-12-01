@@ -1,5 +1,5 @@
 <?php
-require_once "admin\db-handeler\bootstrap.php";
+
 
 // get post info
 $news_id = $_GET['news_id'];
