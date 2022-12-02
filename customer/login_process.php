@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 
 
@@ -39,6 +38,10 @@ if ($arr['password'] != $password) {
 }
 
 
+$id = $arr['id'];
+$_SESSION['customer_id'] = $id;
+$_SESSION['customer_email'] = $email;
+$_SESSION['customer_name'] = $arr['name'];
 
 if ($remember) {
     // if user check remember me then create cookie with token exist a month
@@ -47,11 +50,6 @@ if ($remember) {
         'token' => "$token"
     ], "id = $id");
     setcookie("customer_token", $token, time() + 60 * 60 * 24 * 30); // set cookie customer token for 30 days
-} else {
-    $id = $arr['id'];
-    $_SESSION['customer_id'] = $id;
-    $_SESSION['customer_email'] = $email;
-    $_SESSION['customer_name'] = $arr['name'];
 }
 
 header("location:/?success=Đăng nhập thành công");

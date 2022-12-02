@@ -40,6 +40,7 @@ $news = $connect_DB->execute_sql($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="view/css/header.css">
     <link rel="stylesheet" href="view/css/articles.css">
+    <link rel="stylesheet" href="view/css/side_bar.css">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <title>Báo Thức 4.0</title>
 </head>
@@ -47,6 +48,7 @@ $news = $connect_DB->execute_sql($sql);
 <body>
     <?php
     require_once "view/partials/header.php";
+    require_once "view/partials/side_bar.php";
     require_once "view/partials/articles_list.php";
     ?>
 
@@ -58,7 +60,9 @@ $news = $connect_DB->execute_sql($sql);
             </a>
         </button>
 
-    <?php } ?>
+    <?php }
+    require_once __DIR__ . "/../js/side_bar.php";
+    ?>
 </body>
 
 </html>

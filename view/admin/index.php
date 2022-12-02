@@ -40,7 +40,7 @@ if (isset($_COOKIE['admin_token'])) {
 
 <body>
     <!-- navigation bar -->
-    <a href="news/index.php">Danh sách bài đăng</a>
+    <a href="/admin/news">Danh sách bài đăng</a>
     <a href="/admin/logoutProcess">Đăng xuất</a>
 
     <!-- content -->

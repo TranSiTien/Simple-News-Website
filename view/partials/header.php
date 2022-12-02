@@ -30,5 +30,8 @@
             </div>
         <?php }
         ?>
+        <span class="open-nav-btn" id="open-nav-btn" onclick="openNav()">&#9776;</span>
+        <span class="close-nav-btn" id="close-nav-btn" onclick="closeNav()">&times;</span>
+
 
     </header>
