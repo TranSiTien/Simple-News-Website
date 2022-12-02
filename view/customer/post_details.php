@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="view/css/side_bar.css">
     <link rel="stylesheet" href="view/css/post.css">
     <link rel="stylesheet" href="view/css/rating_comment.css">
-    <link rel="stylesheet" href="view/css/post.css">
+
     <title>Bài đăng</title>
 </head>
 
@@ -20,6 +20,7 @@
     require_once __DIR__ . "/../partials/side_bar.php";
     require_once __DIR__ . "/../partials/post.php";
     require_once __DIR__ . "/../partials/rating_coment.php";
+    require_once __DIR__ . "/../js/side_bar.php";
     ?>
 </body>
 

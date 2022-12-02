@@ -8,10 +8,10 @@
             '/profile' => 'Trang cá nhân',
             '/createPost' => 'Đăng bài',
             '/category' => 'Thể loại',
-            '/editPost' => 'Quản lý bài viết',
+            '/updatePost' => 'Quản lý bài viết',
         ];
         foreach ($nav_list as $link => $name) {
-            if (!is_customer() && $link == '/profile') continue;
+            if (!is_customer() && ($link == '/profile' || $link == '/createPost' || $link == '/updatePost')) continue;
             if (Request::uri() == $link) {
                 echo "<a class=\"active\" href='$link'>$name</a>";
             } else {

@@ -1,0 +1,149 @@
+<?php
+
+
+if (!is_customer()) {
+    header('location:/login?error=Không có quyền truy cập');
+    exit;
+}
+$sql = "select * from categories";
+$result = $connect_DB->execute_sql($sql);
+$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mobiscroll JS and CSS Includes -->
+    <link rel="stylesheet" href="lib/css/mobiscroll.javascript.min.css">
+    <script src="lib/js/mobiscroll.javascript.min.js"></script>
+
+    <!-- boostrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="view/css/insert_post_form.css">
+    <link rel="stylesheet" href="view/css/header.css">
+    <link rel="stylesheet" href="view/css/side_bar.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <?php
+    require_once "view/partials/header.php";
+    require_once "view/partials/side_bar.php";
+    ?>
+    <form action="/insertPostProcess" method="post">
+
+        <input type="hidden" name="customer_id" value="<?= $_SESSION['customer_id'] ?>">
+        <input type="hidden" name="is_pinned" value=0>
+        <input type="hidden" name="status" value=1>
+
+
+
+        <label>
+            <span>Tiêu đề</span>
+            <textarea mbsc-textarea data-input-style="underline" data-label-style="stacked" data-end-icon="pencil" name="title"></textarea>
+        </label>
+        <br>
+
+        <label>
+            <span>Nội dung</span>
+            <textarea mbsc-textarea data-input-style="underline" data-label-style="stacked" data-start-icon="bubble" name="content"></textarea>
+        </label>
+        <div class="mbsc-grid mbsc-row mbsc-justify-content-center">
+            <label>
+                <span>Chọn ảnh</span>
+                <input data-input-style="outline" data-label-style="floating" mbsc-input type="file" placeholder="Không có cũng được" name="uploadImage" />
+            </label>
+
+            <div class="categories-selection">
+                <label>
+                    <span>Chọn thể loại</span>
+                    <input mbsc-input id="demo-multiple-select-input" placeholder="Bạn chưa chọn thể loại nào cho bài đăng... nhưng mà không sao :3" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" name="categories" />
+                </label>
+                <select id="demo-multiple-select" multiple>
+                    <?php
+                    foreach ($categories as $category) {
+                        echo "<option value='$category[id]'>$category[name]</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="text-center">
+            <button mbsc-button id="show-cfm" class="btn btn-outline-primary btn-lg" type="submit" onclick="return show_cfm()">Xác nhận</button>
+        </div>
+
+    </form>
+
+    <script>
+        function show_cfm() {
+            var cfm = confirm("Bạn có chắc chắn muốn đăng bài không?");
+            if (cfm) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+    <?php
+    require_once __DIR__ . "/../js/select_category.php";
+    require_once __DIR__ . "/../js/side_bar.php";
+    ?>
+
+</body>
+
+</html>
+<!-- insert form -->
+<!-- <form action="insert_process.php" method="post">
+    <input type="hidden" name="customer_id" value="<?= $_SESSION['customer_id'] ?>">
+    <input type="hidden" name="is_pinned" value=0>
+    <input type="hidden" name="status" value=1>
+    <span>
+        Tiêu đề
+    </span>
+    <textarea name="title"></textarea>
+    <br>
+
+    <span>Nội dung</span>
+    <textarea name="content"></textarea>
+    <br>
+
+    <span>Ảnh</span>
+    <textarea name="image"></textarea>
+    <br>
+    <br>
+
+    <div class="category_selection_list">
+        <button class="category_select_btn">Lựa chọn thể loại</button>
+        <div class="category_content">
+            <?php
+            // $categories = $connect_DB->select('categories', '*');
+            // foreach ($categories as $category) {
+            //     echo "<div class='category_item'>
+            //                 <input type='checkbox' name='category_id[]' value='$category[id]'>
+            //                 <label for='category_id'>$category[name]</label>
+            //                 </div>";
+            // }
+            ?>
+            <label>
+                Multi-select
+                <input mbsc-input id="my-input" data-dropdown="true" data-tags="true" />
+            </label>
+
+        </div>
+    </div>
+
+    <br>
+
+
+
+    <button type="submit">Xác nhận</button>
+
+</form>-->

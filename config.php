@@ -17,8 +17,13 @@ $config = [
         '/signup' => __DIR__ . '/view/customer/sign_up_form.php',
         '/login' => __DIR__ . '/view/customer/login_form.php',
         '/post' => __DIR__ . '/view/customer/post_details.php',
-        '/createPost' => __DIR__ . '/insert_post_form.php',
+
+        '/createPost' => __DIR__ . '/view/customer/insert_post_form.php',
         '/insertPostProcess' => __DIR__ . '/customer/insert_post_process.php',
+
+        '/updatePost' => __DIR__ . '/view/customer/update_post_form.php',
+        '/updatePostProcess' => __DIR__ . '/customer/update_post_process.php',
+
         '/signupProcess' => __DIR__ . '/customer/sign_up_process.php',
         '/loginProcess' => __DIR__ . '/customer/login_process.php',
         '/logoutProcess' => __DIR__ . '/customer/logout_process.php',

@@ -16,6 +16,11 @@
                 <input type="search" name="search" value="<?php echo $search_key ?>">
                 <button><img src="img/loupe.png" alt="kính lúp"></button>
             </form>
+        <?php } else {
+        ?>
+            <div class="search_form" style="visibility: hidden;">
+                <button><img src="img/loupe.png" alt="kính lúp"></button>
+            </div>
         <?php }
 
         if (!is_customer()) {
@@ -23,6 +28,7 @@
             <div class="identification">
                 <a href="/signup">Đăng kí</a>
                 <a href="/login">Đăng nhập</a>
+
             </div>
         <?php } else { ?>
             <div class="identification">
