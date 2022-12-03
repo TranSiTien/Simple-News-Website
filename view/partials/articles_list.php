@@ -2,7 +2,7 @@
     <article class="article_item">
         <div class="article_thumb">
             <a href="/post?<?= "news_id=" . $each['id'] ?>">
-                <img src="<?= $each['image'] ?>" alt="Ảnh bài đăng">
+                <img src="<?= "img/post_img/" . $each['image'] ?>" alt="Ảnh bài đăng">
             </a>
         </div>
         <div class="article_content">
