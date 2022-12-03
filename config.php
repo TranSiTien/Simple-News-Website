@@ -29,6 +29,7 @@ $config = [
         '/logoutProcess' => __DIR__ . '/customer/logout_process.php',
 
         // admin routes
+
         '/admin/' => __DIR__ . '/view/admin/index.php',
         '/admin/login' => __DIR__ . '/view/admin/login_form.php',
         '/admin/loginProcess' => __DIR__ . '/admin/login_process.php',

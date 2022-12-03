@@ -21,24 +21,29 @@ $is_pinned = 0;
 $status = 1;
 $title = $_POST['title'];
 $content = $_POST['content'];
-
+echo "<pre>";
+var_dump($_FILES);
+echo "</pre>";
+die();
 // save image
 if ($_FILES['uploadImage']['name'] != '') {
     $file_extention = pathinfo($_FILES['uploadImage']['name'], PATHINFO_EXTENSION);
-    if (!($file_extention == 'jpg' || $file_extention == 'png' || $file_extention == 'jpeg' || $file_extention == 'gif' || $file_extension == 'webp')) {
+    if ($file_extention !== 'jpg' && $file_extention !== 'png' && $file_extention !== 'jpeg' && $file_extention !== 'gif' && $file_extension !== 'webp') {
         push_post_data_to_session();
         header('location:/createPost?error=File không đúng định dạng');
+        exit;
     }
 
     $image_info = $_FILES['uploadImage'];
 
-    if ($image_info['size'] > 100000) {
+    if ($image_info['size'] > 1000000) {
         push_post_data_to_session();
         header('location:/createPost?error=Kích thước ảnh quá lớn');
+        exit();
     }
 
     $target_dir = __DIR__ . "/../img/post_img/";
-    $image_name = uniqid() . '@' . $image_info['name'];
+    $image_name = uniqid() . "." . $file_extention;
     move_uploaded_file($image_info['tmp_name'],  $target_dir . $image_name);
 }
 

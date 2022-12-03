@@ -56,8 +56,7 @@ $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <div class="mbsc-grid mbsc-row mbsc-justify-content-center">
             <label>
                 <span>Chọn ảnh</span>
-
-                <input data-input-style="outline" data-end-icon="attachment" data-label-style="floating" mbsc-input type="file" placeholder="Không có cũng được" name="uploadImage" tabindex="3" />
+                <input data-input-style="outline" data-end-icon="attachment" data-label-style="floating" mbsc-input type="file" placeholder="Không có cũng được" name="uploadImage" accept=".jpg,.jpeg,.gif,.webp" />
             </label>
 
             <div class="categories-selection">
@@ -81,7 +80,7 @@ $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
         </div>
 
     </form>
-
+    <img src="" alt="">
     <?php
     require_once __DIR__ . "/../js/select_category.php";
     require_once __DIR__ . "/../js/side_bar.php";
