@@ -38,14 +38,14 @@ CREATE TABLE IF NOT EXISTS `admin` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table simple_news_website.category
-CREATE TABLE IF NOT EXISTS `category` (
+-- Dumping structure for table simple_news_website.categories
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `description` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -57,9 +57,9 @@ CREATE TABLE IF NOT EXISTS `classify` (
   PRIMARY KEY (`id`),
   KEY `FK_classify_category` (`category_id`),
   KEY `FK_classify_news` (`news_id`),
-  CONSTRAINT `FK_classify_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  CONSTRAINT `FK_classify_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   CONSTRAINT `FK_classify_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   CONSTRAINT `FK_news_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   CONSTRAINT `is_pinned_check` CHECK ((`is_pinned` < 2)),
   CONSTRAINT `status_check` CHECK ((`status` < 4))
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='status:\r\n0 - this news have been denied by admin or super admin\r\n1 - customer recently push this news and waiting for admin check\r\n2 - admin accept this news and push request for supper admin browse\r\n3 - super admin accept request and public this news\r\n\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='status:\r\n0 - this news have been denied by admin or super admin\r\n1 - customer recently push this news and waiting for admin check\r\n2 - admin says news not available need to change\r\n3 - admin accept this news and push request for supper admin browse\r\n 4 - supper admin accept this news and push to website\r\n';
 
 -- Data exporting was unselected.
 
