@@ -21,10 +21,7 @@ $is_pinned = 0;
 $status = 1;
 $title = $_POST['title'];
 $content = $_POST['content'];
-echo "<pre>";
-var_dump($_FILES);
-echo "</pre>";
-die();
+
 // save image
 if ($_FILES['uploadImage']['name'] != '') {
     $file_extention = pathinfo($_FILES['uploadImage']['name'], PATHINFO_EXTENSION);
