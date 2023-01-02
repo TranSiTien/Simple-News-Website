@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- Dumping data for table simple_news_website.admin: ~1 rows (approximately)
 DELETE FROM `admin`;
 INSERT INTO `admin` (`id`, `email`, `token`, `name`, `password`, `phone_number`, `maneger_id`) VALUES
-	(6, 'tien@gmail.com', '7MMDwm2yzPIEzIoo**K6L&pEZkli6pnE7cW@RK@BPuQE7#d8#r', 'Tiến', 'nhanha123', NULL, NULL);
+	(6, 'tien@gmail.com', 'OjOHtiextJ80LrWeZxKaex#oYwgw7DfD%cMMg33$2DeQT1ci#K', 'Tiến', 'nhanha123', NULL, NULL);
 
 -- Dumping structure for table simple_news_website.categories
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -119,7 +119,7 @@ INSERT INTO `customers` (`id`, `email`, `token`, `name`, `birthday`, `password`,
 	(21, 'huce@gmail.com', 'Wgla4OP&eIvKiFI2MWDt&MSx4YwLIKXD4HI*REAxnAFE@0BsEn', NULL, NULL, 'nhanha123', NULL),
 	(22, '222@gmail.com', '8J6HgLbf*7XZpdsjWcvrVCNXfpG00B&pGj5&Ynf1Kra7#Rt8l5', NULL, NULL, 'nhanha123', NULL),
 	(23, 'thanhdtrz@gmail.com', '4X8mMCEnyXzE0#0yqgFwglVeKM8F7sdiZjEoGRyqjbYvCpKgJ6', NULL, NULL, 'nhanha123', NULL),
-	(24, 'cus@gmail.com', 'j#rEDZF%e8*7cosJgdg*cMkxh7frbn1$SyhpMGJX4UhWc%xiPy', NULL, NULL, '11111111', NULL),
+	(24, 'cus@gmail.com', 'v#D7zWNtxd*xO1pRbWOJ6lhfQvc$8@G4lGyvSt4Z*SZViFA8XY', NULL, NULL, '11111111', NULL),
 	(25, '1@gmail.com', '2EHOL0d&aN%Jtj$Q3umJQp@sDxmg$DfEIxb1P4CZbn6YAwHJa7', NULL, NULL, '11111111', NULL);
 
 -- Dumping structure for table simple_news_website.news
@@ -159,7 +159,6 @@ INSERT INTO `news` (`id`, `customer_id`, `browse_admin_id`, `title`, `content`, 
 	(166, 24, NULL, 'ghyjgvky', 'hjkjkl', '638af22eea5f0.jpg', '2022-12-02 23:52:30', '2022-12-03 06:52:30', b'0', b'1'),
 	(167, 24, NULL, 'Test upload', 'dsjklf;sj', '638b0c74811b2.webp', '2022-12-03 01:44:36', '2022-12-03 08:44:36', b'0', b'1');
 
--- Dumping structure for table simple_news_website.rating_comment
 CREATE TABLE IF NOT EXISTS `rating_comment` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
