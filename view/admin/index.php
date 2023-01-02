@@ -17,11 +17,13 @@ if (isset($_COOKIE['admin_token'])) {
         $_SESSION['admin_id'] = $arr['id'];
         $_SESSION['admin_name'] = $arr['name'];
     } else {
-        throw new Exception("Lỗi: Không tìm thấy admin với token này");
+        header("location:/admin/login?error=Vui lòng đăng nhập, token không hợp lệ");
+        exit;
     }
 } else if (isset($_SESSION['admin_id'])) {
     if (!is_admin()) {
-        throw new Exception("Lỗi: Bạn không có quyền truy cập trang này");
+        header("location:/admin/login?error=Vui lòng đăng nhập, sai thông tin đăng nhập");
+        exit;
     }
 } else {
     header("location:/admin/login?error=Vui lòng đăng nhập");

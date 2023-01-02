@@ -5,8 +5,18 @@ $sql = "select cus.name ,rating, comment, rc.create_at, rc.reply_id,rc.id from n
 join customers as cus on rc.customer_id = cus.id
 where news.id = $news_id and isnull(rc.reply_id)";
 $rat_cmt = $connect_DB->execute_sql($sql)->fetch_all(MYSQLI_ASSOC);
+
+?> 
+   <button class="placeholder" onclick="openComment(this);hidden(this)">
+        Viết bình luận
+    </button>
+    <form class="comment_form hidden">
+        
+    </form>
+    <?php
 if (!$rat_cmt) {
     echo "<h2>Không có đánh giá và bình luận</h2>";
+
 } else {
 
     foreach ($rat_cmt as $each) {

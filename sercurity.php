@@ -32,6 +32,25 @@ function is_admin()
     }
 }
 
+function is_super_admin()
+{
+    global $connect_DB;
+    if (isset($_SESSION['admin_id']) && isset($_SESSION['admin_name']) && isset($_SESSION['admin_email'])) {
+        $id = $_SESSION['admin_id'];
+        $email = $_SESSION['admin_email'];
+        $name = $_SESSION['admin_name'];
+
+        $sql = "select count(id) from super_admin where id = $id and email = '$email' and name = '$name' and manager_id is null";
+        $result = $connect_DB->execute_sql($sql);
+        $num_row = mysqli_fetch_array($result)[0];
+        if ($num_row) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 function is_customer()
 {
     global $connect_DB;

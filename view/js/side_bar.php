@@ -10,4 +10,5 @@
         document.getElementById("open-nav-btn").style.display = "block";
         document.getElementById("close-nav-btn").style.display = "none";
     }
+    // $('.span').disableSelection();
 </script>

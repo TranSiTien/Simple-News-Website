@@ -22,7 +22,7 @@ $search_key = search::get_search_key();
 
 // pagination and search feature
 $articles_per_page = pagination::$articles_per_page;
-$article_to_jump = pagination::get_article_to_jump();
+$article_to_jump = pagination::get_article_to_jump($search_key);
 $sql = "select substring(content,1,600) as excerpt, title,image, id from news 
     where title like '%$search_key%' or content like '%$search_key%'
     limit $articles_per_page offset $article_to_jump";
@@ -38,6 +38,7 @@ $news = $connect_DB->execute_sql($sql);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="view/css/header.css">
     <link rel="stylesheet" href="view/css/side_bar.css">
     <link rel="stylesheet" href="view/css/articles.css">
@@ -55,7 +56,7 @@ $news = $connect_DB->execute_sql($sql);
     ?>
 
     <!-- page list -->
-    <?php for ($i = 1; $i <= pagination::get_number_of_page($connect_DB, $search_key); $i++) { ?>
+    <?php for ($i = 1; $i <= pagination::get_number_of_page($search_key); $i++) { ?>
         <button>
             <a href="?page=<?php echo $i ?><?= empty($search_key) ? "" : "&search=$search_key" ?>">
                 <?php echo $i ?>
