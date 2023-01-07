@@ -42,7 +42,10 @@ class pagination
     // calculate article to jump
     public static function get_article_to_jump(string $search_key)
     {
-        $article_to_jump = (self::get_page($search_key) - 1) * self::$articles_per_page;
+        $page = self::get_page($search_key);
+        if($page == 0)
+        $page =1;
+        $article_to_jump = ($page - 1) * self::$articles_per_page;
         return $article_to_jump;
     }
 }

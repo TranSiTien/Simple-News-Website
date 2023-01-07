@@ -1,4 +1,9 @@
 <?php
+
+
+namespace Core;
+
+
 // make a ramdom token
 function makeToken(int $length = 50)
 {

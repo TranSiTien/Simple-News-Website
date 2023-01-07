@@ -27,10 +27,7 @@ $sql = "select substring(content,1,600) as excerpt, title,image, id from news
     where title like '%$search_key%' or content like '%$search_key%'
     limit $articles_per_page offset $article_to_jump";
 $news = $connect_DB->execute_sql($sql);
-if (mysqli_num_rows($news) == 0) {
-    echo "<h1>Không tìm thấy bài viết nào</h1>";
-    return;
-}
+
 
 ?>
 
@@ -55,6 +52,9 @@ if (mysqli_num_rows($news) == 0) {
     <?php
     require_once "view/partials/header.php";
     require_once "view/partials/side_bar.php";
+    if (mysqli_num_rows($news) == 0) {echo "<h1>Không tìm thấy bài viết nào</h1>";
+    // return;
+}
     require_once "view/partials/articles_list.php";
     ?>
 

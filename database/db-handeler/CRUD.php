@@ -1,4 +1,5 @@
 <?php
+namespace Core\Database;
 trait query_command
 {
     public function insert(string $table_name, array $data)

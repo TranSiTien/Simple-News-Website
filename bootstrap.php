@@ -1,4 +1,5 @@
 <?php
+namespace App\Bootstrap;
 require_once "Request.php";
 require_once "Router.php";
 require_once "config.php";

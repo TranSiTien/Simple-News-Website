@@ -1,4 +1,7 @@
 <?php
+namespace Core\Database;
+
+use PDOException;
 class connector
 {
     public static function connect($db_config)

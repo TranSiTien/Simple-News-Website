@@ -27,8 +27,8 @@ $image = $news['image'];
 
     <div class="singular-content">
         <img src="<?= $image ?>" alt="Ảnh bài đăng">
+        <p style="white-space: pre-line"><?= $content?></p>
         <p>
-            <?= $content ?>
         </p>
     </div>
 </article>

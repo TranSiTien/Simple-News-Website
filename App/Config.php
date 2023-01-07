@@ -1,5 +1,7 @@
 <?php
-$config = [
+namespace App;
+
+return [
     'database_env' => [
         'server_name' => 'localhost',
         'user_name' => 'root',

@@ -1,6 +1,8 @@
 <?php
-require 'sql_handeler.php';
-require 'CRUD.php';
+namespace Core\Database;
+
+use \Core\Database\SQLHandeler;
+use \Core\Database\CRUD;
 final class query_builder
 {
     use sql_handler;

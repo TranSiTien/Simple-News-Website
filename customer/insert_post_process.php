@@ -5,6 +5,15 @@ function push_post_data_to_session()
     $_SESSION['content'] = $_POST['content'];
     $_SESSION['categories_selected'] = explode(", ", $_POST['categories']);
 }
+function accepted_file_extention($file_extention)
+{
+    $accepted_file_extention = ['jpg', 'png', 'jpeg', 'gif', 'webp'];
+    if (!in_array($file_extention, $accepted_file_extention)) {
+        push_post_data_to_session();
+        header('location:/createPost?error=File không đúng định dạng');
+        exit;
+    }
+}
 if (!is_customer()) {
     header('location:/login?error=Không có quyền truy cập');
     exit;
@@ -25,14 +34,8 @@ $content = $_POST['content'];
 // save image
 if ($_FILES['uploadImage']['name'] != '') {
     $file_extention = pathinfo($_FILES['uploadImage']['name'], PATHINFO_EXTENSION);
-    if ($file_extention !== 'jpg' && $file_extention !== 'png' && $file_extention !== 'jpeg' && $file_extention !== 'gif' && $file_extension !== 'webp') {
-        push_post_data_to_session();
-        header('location:/createPost?error=File không đúng định dạng');
-        exit;
-    }
-
+    accepted_file_extention($file_extention);
     $image_info = $_FILES['uploadImage'];
-
     if ($image_info['size'] > 1000000) {
         push_post_data_to_session();
         header('location:/createPost?error=Kích thước ảnh quá lớn');
