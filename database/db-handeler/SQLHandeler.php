@@ -1,4 +1,8 @@
 <?php
+
+namespace Core\Database;
+
+use Exception;
 trait sql_handler
 {
     abstract protected function get_connect_db();

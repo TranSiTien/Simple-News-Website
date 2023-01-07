@@ -1,9 +1,17 @@
 <?php
+namespace Core;
 
+use Exception;
 class Router
 {
 
-    private array $routes = [];
+    protected array $routes = [];
+    protected array $params = [];
+
+    public function add(array $route,array $param)
+    {
+        
+    }
 
     public function __construct(array $routes)
     {
